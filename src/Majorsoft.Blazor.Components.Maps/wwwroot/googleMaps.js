@@ -1,7 +1,7 @@
 ﻿export function init(key, elementId, dotnetRef, backgroundColor, controlSize) {
 	if (!key || !elementId || !dotnetRef) {
 		return;
-	}
+  }
 
 	storeElementIdWithDotnetRef(_mapsElementDict, elementId, dotnetRef, backgroundColor, controlSize); //Store map info
 
@@ -37,6 +37,15 @@
 	importedMaps.defer = true;
 	document.head.appendChild(importedMaps);
 }
+
+window.GetGoogleMapJS = (elementId) => {
+  let mapWithDotnetRef = getElementIdWithDotnetRef(_mapsElementDict, elementId);
+  if (mapWithDotnetRef) {
+    return mapWithDotnetRef.map;
+  }
+
+  return null;
+};
 
 //Global function for Google Js callback. It will be called when "https://maps.googleapis.com/maps/api/js" loaded.
 //TODO: multiple instances of Js Maps if registered must be stored before callback happens. In the future it might causes timing issues...
@@ -273,7 +282,7 @@ function storeElementIdWithDotnetRef(dict, elementId, dotnetRef, backgroundColor
 		}
 	}
 
-	if (!elementFound) {
+  if (!elementFound) {
 		dict.push({
 			key: elementId,
 			value: { ref: dotnetRef, map: null, bgColor: backgroundColor, ctrSize: controlSize }
@@ -453,7 +462,7 @@ export function createMarkers(elementId, markers) {
 						infoWindow = new google.maps.InfoWindow({
 							content: markerData.infoWindow.content,
 							maxWidth: markerData.infoWindow.maxWidth
-						}); 
+						});
 					}
 
 					marker.addListener("click", () => {
